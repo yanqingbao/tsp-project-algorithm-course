@@ -62,12 +62,10 @@ if __name__ == '__main__':
         lines = get_coordinates_list(fullpath)
         #print(lines)
         
+        #gets the coordinates for each marker and makes a string of paths to use for path
         for line in lines:
             coordinates = line.split(' ')            
             marker_list.append("markers=size:medium|color:0xFFFF00|%s,%s|" % (coordinates[0],coordinates[1]))
-        
-        for line in lines:
-            coordinates = line.split(' ')
             path_list.append("%s,%s|" % (coordinates[0],coordinates[1]))
         
         get_map_with_coordinates("google_map_example3", imgsize=(640,640), imgformat="png", markers=marker_list, path = path_list)
