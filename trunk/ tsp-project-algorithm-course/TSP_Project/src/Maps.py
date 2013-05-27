@@ -30,7 +30,7 @@ def get_map_with_coordinates(filename, zoom=None, imgsize="500x500", imgformat="
     
     #draws a path between the markers
     if path != None:
-        request += "path=color:red|%s" % path
+        request += "path=color:red%s|&" % path 
         
     request += "sensor=false&"
            
@@ -54,7 +54,7 @@ def get_map_with_coordinates(filename, zoom=None, imgsize="500x500", imgformat="
 if __name__ == '__main__':
     
         marker_list = []
-        path_list = []
+        path_list = ""
         path = os.getcwd()
         filename = "coordinates.txt"
         fullpath = path + "\\" + filename
@@ -64,8 +64,10 @@ if __name__ == '__main__':
         
         #gets the coordinates for each marker and makes a string of paths to use for path
         for line in lines:
-            coordinates = line.split(' ')            
-            marker_list.append("markers=size:medium|color:0xFFFF00|%s,%s|" % (coordinates[0],coordinates[1]))
-            path_list.append("%s,%s|" % (coordinates[0],coordinates[1]))
-        
+            coordinates = line.replace("/n","").split(' ')
+            formatted_coords = "%s, %s" % (coordinates[0],coordinates[1])
+            #print(formatted_coords)
+            marker_list.append("markers=size:medium|color:0xFFFF00|" + formatted_coords)
+            path_list = path_list + "|" + formatted_coords
+                   
         get_map_with_coordinates("google_map_example3", imgsize=(640,640), imgformat="png", markers=marker_list, path = path_list)
