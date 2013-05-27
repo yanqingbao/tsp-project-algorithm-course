@@ -13,7 +13,7 @@ def get_coordinates_list(filename):
     return lines
 
 def get_map_with_coordinates(filename, zoom=None, imgsize="500x500", imgformat="jpeg",
-                          maptype="roadmap", markers=None) : 
+                          maptype="roadmap", markers=None, path=None) : 
     
     #assembling the URL
     #base URL
@@ -23,10 +23,15 @@ def get_map_with_coordinates(filename, zoom=None, imgsize="500x500", imgformat="
     request += "format=%s&" % imgformat
     request += "maptype=%s&" % maptype  # roadmap, satellite, hybrid, terrain
     
+    #adds markers parameters to the map
     if markers != None:
         for marker in markers:
             request += "%s&" % marker
-            
+    
+    #draws a path between the markers
+    if path != None:
+        request += "path=color:red|%s" % path
+        
     request += "sensor=false&"
            
     print(request)
@@ -49,19 +54,20 @@ def get_map_with_coordinates(filename, zoom=None, imgsize="500x500", imgformat="
 if __name__ == '__main__':
     
         marker_list = []
+        path_list = []
         path = os.getcwd()
         filename = "coordinates.txt"
         fullpath = path + "\\" + filename
         print(fullpath)
-        counter = 1
         lines = get_coordinates_list(fullpath)
-        print(lines)
+        #print(lines)
         
         for line in lines:
             coordinates = line.split(' ')            
-            marker_list.append("markers=size:tiny|label:%s|color:0xFFFF00|%s,%s|" % (counter,coordinates[0],coordinates[1]))
-            counter += 1
+            marker_list.append("markers=size:medium|color:0xFFFF00|%s,%s|" % (coordinates[0],coordinates[1]))
         
-        get_map_with_coordinates("google_map_example3", imgsize=(640,640), imgformat="png", markers=marker_list )
+        for line in lines:
+            coordinates = line.split(' ')
+            path_list.append("%s,%s|" % (coordinates[0],coordinates[1]))
         
-
+        get_map_with_coordinates("google_map_example3", imgsize=(640,640), imgformat="png", markers=marker_list, path = path_list)
