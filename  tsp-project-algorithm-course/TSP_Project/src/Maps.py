@@ -118,7 +118,7 @@ if __name__ == '__main__':
         for line in lines:
             coordinates = line.replace("/n","").split(' ')
             formatted_coords = "%s,%s" % (coordinates[0],coordinates[1])
-            pl_coords.append((float(coordinates[0]),float(coordinates[1])))
+            pl_coords.append((float(coordinates[1]),float(coordinates[0])))
             marker_list.append("markers=size:medium|color:0xFFFF00|" + formatted_coords)
             #path_list = path_list + "|" + formatted_coords
         
